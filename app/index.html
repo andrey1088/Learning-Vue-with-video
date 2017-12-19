@@ -49,8 +49,8 @@
             <p v-html="formData.badge"></p>
             <p>My blog is <a v-bind:href="formData.url">here</a></p>
             <p>
-                <h4>My favourite book is ''</h4>
-                <img src="" alt="alt">
+                <h4>My favourite book is '{{book.title}}'</h4>
+                <!-- <img :src="book.url" alt="alt"> -->
             </p>
             <p>
                 My technologies
@@ -61,9 +61,11 @@
         </div>
         <div v-else class="well">Please submite the form</div>
     </div>
+    <div id="app2"></div>
     <script>
-        new Vue({
+        var vm1 = new Vue({
             el:"#app",
+            // template: '<h1>My template {{vm1.$data.formData.firstname}}</h1>',
             data:{
                 formData:{
                     firstname: "",
@@ -73,7 +75,11 @@
                     bookisbn: "",
                     technologies: ""
                 },
-                showDetails: false
+                showDetails: false,
+                book:{
+                    title: "",
+                    url: ""
+                }
             },
             methods:{
                 submit: function(){
@@ -87,8 +93,15 @@
                 mytechnologies: function(){
                     return this.formData.technologies.split(',');
                 }
+            },
+            watch:{
+                "formData.bookisbn": function(){
+                    var url = "http://crossorigin.me/http://openlibrary.org/api/books?bibkeys=ISBN:"+this.formData.bookisbn+"&format=json&jscmd=data";
+                    var inst = this;
+                }
             }
         });
+        console.log(vm1.$data);
     </script>
 </body>
 </html>
